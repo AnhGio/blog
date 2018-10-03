@@ -38,11 +38,9 @@ class CalotteryExport implements FromQuery, WithMapping, WithHeadings, WithEvent
     {
         $query;
         if ($this->fromId != null && $this->toId != null) {
-            dd($this->fromId);
             $query = CalotteryNumber::query()->where("draw_number", ">=", $this->fromId)
                                              ->where("draw_number", "<=", $this->toId);
         } else {
-            dd($this->fromId);
             $query = CalotteryNumber::query()->where("created_at", ">=", $this->fromDate . " 00:00:00")
                                              ->where("created_at", "<=", $this->toDate . " 23:59:59");
         }
