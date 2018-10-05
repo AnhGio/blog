@@ -29,8 +29,8 @@
 			<br>
 			<div align="center">
 				<select name="color">
-					<option value="1">BlueCalottery</option>
-					<option value="2">RedCalottery</option>
+					<option value="1">Xanh</option>
+					<option value="2">Đỏ</option>
 				</select>
 			<div align="center">
 			<br>
