@@ -56,10 +56,11 @@ class CrawlCalotteryCommand extends Command
         }
         sort($blueNumbers);
         
-        $calotteryNumber = new CalotteryNumber;
-        if ($calotteryNumber->latest()->first()->draw_number == $drawNumber) {
-            return;
+        $existCalotteryNumber = CalotteryNumber::where('draw_number', $drawNumber)->first(['id']);
+        if ($existCalotteryNumber) {
+            return false;
         }
+        $calotteryNumber = new CalotteryNumber;
         $calotteryNumber->draw_number = $drawNumber;
         $calotteryNumber->blue_numbers = implode(",", $blueNumbers);
         $calotteryNumber->red_number = $redNumber;
