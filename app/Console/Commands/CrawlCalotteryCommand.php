@@ -56,14 +56,29 @@ class CrawlCalotteryCommand extends Command
         }
         sort($blueNumbers);
         
-        $existCalotteryNumber = CalotteryNumber::where('draw_number', $drawNumber)->first(['id']);
-        if ($existCalotteryNumber) {
-            return false;
+        try {
+            $existCalotteryNumber = CalotteryNumber::where('draw_number', $drawNumber)->first(['id']);
+            if ($existCalotteryNumber) {
+                return false;
+            }
+            $calotteryNumber = new CalotteryNumber;
+            $calotteryNumber->draw_number = $drawNumber;
+            $calotteryNumber->blue_numbers = implode(",", $blueNumbers);
+            $calotteryNumber->red_number = $redNumber;
+            
+            $isSaveSuccessful = $calotteryNumber->save();
+
+            if (!$isSaveSuccessful) {
+                $this->addLog($drawNumber, implode(",", $blueNumbers), $redNumber);
+            }
         }
-        $calotteryNumber = new CalotteryNumber;
-        $calotteryNumber->draw_number = $drawNumber;
-        $calotteryNumber->blue_numbers = implode(",", $blueNumbers);
-        $calotteryNumber->red_number = $redNumber;
-        dd($calotteryNumber->save());
+        catch (\Exception $e) {
+            $this->addLog($drawNumber, implode(",", $blueNumbers), $redNumber);
+        }
+    }
+
+    protected function addLog($drawNumber, $blueNumbers, $redNumber)
+    {
+        \Log::info($drawNumber . "_" . $blueNumbers . "_" . $redNumber);
     }
 }
