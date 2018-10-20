@@ -39,7 +39,7 @@ class CrawlCalotteryCommand extends Command
      */
     public function handle()
     {
-        // sleep(20);
+        sleep(20);
         $client = new Client();
         $response = $client->request('GET', 'https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1');
 
