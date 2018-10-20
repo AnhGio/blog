@@ -46,10 +46,12 @@ class CalotteryExport implements FromQuery, WithMapping, WithHeadings, WithEvent
         }
 
         if ($this->color == 1) {
-            return $query->select(["draw_number", "blue_numbers"]);
+            $query = $query->select(["draw_number", "blue_numbers"]);
         } else {
-            return $query->select(["draw_number", "red_number"]);
+            $query = $query->select(["draw_number", "red_number"]);
         }
+
+        return $query->groupBy('draw_number')->orderBy('draw_number');
     }
 
     public function headings(): array

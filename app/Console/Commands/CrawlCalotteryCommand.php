@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
 use App\CalotteryNumber;
-use App\Services\PayUService\Exception
 
 class CrawlCalotteryCommand extends Command
 {
@@ -40,7 +39,7 @@ class CrawlCalotteryCommand extends Command
      */
     public function handle()
     {
-        sleep(20);
+        // sleep(20);
         $client = new Client();
         $response = $client->request('GET', 'https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1');
 
@@ -67,7 +66,7 @@ class CrawlCalotteryCommand extends Command
             $calotteryNumber->blue_numbers = implode(",", $blueNumbers);
             $calotteryNumber->red_number = $redNumber;
             
-            $isSaveSuccessful = $calotteryNumber->save());
+            $isSaveSuccessful = $calotteryNumber->save();
 
             if (!$isSaveSuccessful) {
                 $this->addLog($drawNumber, implode(",", $blueNumbers), $redNumber);
@@ -80,6 +79,6 @@ class CrawlCalotteryCommand extends Command
 
     protected function addLog($drawNumber, $blueNumbers, $redNumber)
     {
-        Log::info($drawNumber . "_" . $blueNumbers . "_" . $redNumber);
+        \Log::info($drawNumber . "_" . $blueNumbers . "_" . $redNumber);
     }
 }
