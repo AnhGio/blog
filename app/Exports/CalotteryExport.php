@@ -51,7 +51,17 @@ class CalotteryExport implements FromQuery, WithMapping, WithHeadings, WithEvent
             $query = $query->select(["draw_number", "red_number"]);
         }
 
-        return $query->groupBy('draw_number')->orderBy('draw_number');
+        $query->groupBy('draw_number')->orderBy('draw_number');
+
+        $min = $query->min('draw_number');
+        $max = $query->max('draw_number');
+
+        for ($i=min + 1; $i < max ; $i++) { 
+            if ($query->where('draw_number', $i)->first(['id'])) {
+                continue;
+            }
+            array_splice($input, 3, 0, );
+        }
     }
 
     public function headings(): array

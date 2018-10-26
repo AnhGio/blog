@@ -40,23 +40,23 @@ class CrawlCalotteryCommand extends Command
     public function handle()
     {
         sleep(20);
-        $client = new Client();
-        $response = $client->request('GET', 'https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1');
-
-        $responseData = json_decode($response->getBody(), true);
-        $drawsData = $responseData["draws"][0];
-        $drawNumber = $drawsData["DrawNumber"];
-        $blueNumbers = [];
-        $redNumber = 0;
-        foreach ($drawsData["WinningNumbers"] as $value) {
-            if ($value["IsBullseye"]) {
-                $redNumber = $value["Number"];
-            }
-            $blueNumbers[] = $value["Number"];
-        }
-        sort($blueNumbers);
-        
         try {
+            $client = new Client();
+            $response = $client->request('GET', 'https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1');
+
+            $responseData = json_decode($response->getBody(), true);
+            $drawsData = $responseData["draws"][0];
+            $drawNumber = $drawsData["DrawNumber"];
+            $blueNumbers = [];
+            $redNumber = 0;
+            foreach ($drawsData["WinningNumbers"] as $value) {
+                if ($value["IsBullseye"]) {
+                    $redNumber = $value["Number"];
+                }
+                $blueNumbers[] = $value["Number"];
+            }
+            sort($blueNumbers);
+        
             $existCalotteryNumber = CalotteryNumber::where('draw_number', $drawNumber)->first(['id']);
             if ($existCalotteryNumber) {
                 return false;
