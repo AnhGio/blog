@@ -52,11 +52,13 @@ class CalotteryExport implements FromCollection, WithMapping, WithHeadings, With
         }
 
         $collection = $query->groupBy('draw_number')->orderBy('draw_number')->get();
+        $numberArray = $query->select(["draw_number"])->get()->toArray();
 
         $fromNumber = $collection->first()->toArray()['draw_number'];
         $toNumber = $collection->last()->toArray()['draw_number'];
         for ($i = $fromNumber + 1; $i < $toNumber ; $i++) { 
-            if (!$query->where('draw_number', $i)->first(['id'])) {
+            $existCalotteryNumber = in_array(array("draw_number" => $i), $numberArray);
+            if (!$existCalotteryNumber) {
                 $calotteryNumber = new CalotteryNumber;
                 $calotteryNumber->draw_number = $i;    
                 $collection->put($collection->count(), $calotteryNumber);
