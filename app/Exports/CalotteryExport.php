@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use App\CalotteryNumber;
 
-class CalotteryExport implements FromQuery, WithMapping, WithHeadings, WithEvents
+class CalotteryExport implements FromCollection, WithMapping, WithHeadings, WithEvents
 {
     use Exportable;
 
@@ -34,7 +34,7 @@ class CalotteryExport implements FromQuery, WithMapping, WithHeadings, WithEvent
         return $this;
     }
 
-    public function query() 
+    public function collection()
     {
         $query;
         if ($this->fromId != null && $this->toId != null) {
@@ -51,7 +51,19 @@ class CalotteryExport implements FromQuery, WithMapping, WithHeadings, WithEvent
             $query = $query->select(["draw_number", "red_number"]);
         }
 
-        return $query->groupBy('draw_number')->orderBy('draw_number');
+        $collection = $query->groupBy('draw_number')->orderBy('draw_number')->get();
+
+        $fromNumber = $collection->first()->toArray()['draw_number'];
+        $toNumber = $collection->last()->toArray()['draw_number'];
+        for ($i = $fromNumber + 1; $i < $toNumber ; $i++) { 
+            if (!$query->where('draw_number', $i)->first(['id'])) {
+                $calotteryNumber = new CalotteryNumber;
+                $calotteryNumber->draw_number = $i;    
+                $collection->put($collection->count(), $calotteryNumber);
+            }
+        }
+        $collection = $collection->sortBy('draw_number');
+        return $collection;
     }
 
     public function headings(): array
