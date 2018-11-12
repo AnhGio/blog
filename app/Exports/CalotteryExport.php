@@ -56,8 +56,9 @@ class CalotteryExport implements FromCollection, WithMapping, WithHeadings, With
 
         $fromNumber = $this->fromId;
         $toNumber = $this->toId;
-        if ($this->fromId == null || $this->toId == null) {
-            if $collection->count() > 0 {
+
+        if ($fromNumber == null || $toNumber == null) {
+            if ($collection->count() > 0) {
                 $fromNumber = $collection->first()->toArray()['draw_number'];
                 $toNumber = $collection->last()->toArray()['draw_number'];
             } else {
@@ -65,7 +66,7 @@ class CalotteryExport implements FromCollection, WithMapping, WithHeadings, With
             }
         }
 
-        for ($i = $fromNumber + 1; $i < $toNumber ; $i++) { 
+        for ($i = $fromNumber; $i <= $toNumber ; $i++) { 
             $existCalotteryNumber = in_array(array("draw_number" => $i), $numberArray);
             if (!$existCalotteryNumber) {
                 $calotteryNumber = new CalotteryNumber;
