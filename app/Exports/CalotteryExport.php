@@ -54,8 +54,17 @@ class CalotteryExport implements FromCollection, WithMapping, WithHeadings, With
         $collection = $query->groupBy('draw_number')->orderBy('draw_number')->get();
         $numberArray = $query->select(["draw_number"])->get()->toArray();
 
-        $fromNumber = $collection->first()->toArray()['draw_number'];
-        $toNumber = $collection->last()->toArray()['draw_number'];
+        $fromNumber = $this->fromId;
+        $toNumber = $this->toId;
+        if ($this->fromId == null || $this->toId == null) {
+            if $collection->count() > 0 {
+                $fromNumber = $collection->first()->toArray()['draw_number'];
+                $toNumber = $collection->last()->toArray()['draw_number'];
+            } else {
+                return $collection;
+            }
+        }
+
         for ($i = $fromNumber + 1; $i < $toNumber ; $i++) { 
             $existCalotteryNumber = in_array(array("draw_number" => $i), $numberArray);
             if (!$existCalotteryNumber) {
