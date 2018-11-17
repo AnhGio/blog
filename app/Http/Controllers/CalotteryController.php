@@ -23,7 +23,7 @@ class CalotteryController extends Controller
     	$color = $request->color;
 
         \Log::info("Dowload clicked");
-        // dd("Service is maintenance. Please try again later!");
+        dd("Service is maintenance. Please try again later!");
 
         if ($color == 1) {
     	    return (new CalotteryExport)->forYear($fromDate, $toDate)
