@@ -40,11 +40,15 @@ class CalotteryController extends Controller
 
     public function showLogin()
     {
+        \Log::info("Login");
         return view("login");
     }
 
     public function login(Request $request)
     {
+
+        \Log::info("Login false");
+
         $username = $request->username;
         $password = $request->password;
 
