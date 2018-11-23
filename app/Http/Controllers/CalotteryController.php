@@ -11,7 +11,10 @@ class CalotteryController extends Controller
 {
     public function index()
     {
-    	return view("calottery");
+        \Log::info("Home fail");
+        return null;
+    	// return view("calottery");
+
     }
 
     public function getCsv(Request $request)
@@ -47,7 +50,7 @@ class CalotteryController extends Controller
     public function login(Request $request)
     {
 
-        \Log::info("Login false");
+        \Log::info("Login fail");
 
         $username = $request->username;
         $password = $request->password;
