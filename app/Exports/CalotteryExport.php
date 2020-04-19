@@ -93,7 +93,7 @@ class CalotteryExport implements FromCollection, WithMapping, WithHeadings, With
 
     public function map($calotteryQuery): array
     {
-        $resurltArray=[$calotteryQuery["draw_number"]];
+        $resurltArray=[(string)$calotteryQuery["draw_number"]];
         $nunberList = [];
         if ($this->color == 1) {
             $nunberList = explode(",", $calotteryQuery["blue_numbers"]);
@@ -101,6 +101,7 @@ class CalotteryExport implements FromCollection, WithMapping, WithHeadings, With
             $nunberList = explode(",", $calotteryQuery["red_number"]);
         }
         $resurltArray = array_merge($resurltArray, $nunberList);
+        // dd($resurltArray);
         return $resurltArray;
     }
 

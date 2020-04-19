@@ -12,8 +12,8 @@ class CalotteryController extends Controller
     public function index()
     {
         \Log::info("Home fail");
-        return null;
-    	// return view("calottery");
+        // return null;
+    	return view("calottery");
 
     }
 
@@ -25,8 +25,8 @@ class CalotteryController extends Controller
         $toId = $request->toId;
     	$color = $request->color;
 
-        \Log::info("Dowload clicked");
-        dd("Service is maintenance. Please try again later!");
+        //Log::info("Dowload clicked");
+        //dd("Service is maintenance. Please try again later!");
 
         if ($color == 1) {
     	    return (new CalotteryExport)->forYear($fromDate, $toDate)

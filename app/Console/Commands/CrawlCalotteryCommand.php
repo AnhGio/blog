@@ -40,10 +40,18 @@ class CrawlCalotteryCommand extends Command
     public function handle()
     {
         sleep(20);
-        $client = new Client();
-        $response = $client->request('GET', 'https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1');
 
-        $responseData = json_decode($response->getBody(), true);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        curl_close($ch);     
+        // dd($output);
+     
+        // $client = new Client();
+        // $response = $client->request('GET', 'https://scalecalservice.calottery.com/api/v1.5/drawgames/22?drawscount=1');
+
+        $responseData = json_decode($response, true);
         $drawsData = $responseData["draws"][0];
         $drawNumber = $drawsData["DrawNumber"];
         $blueNumbers = [];
